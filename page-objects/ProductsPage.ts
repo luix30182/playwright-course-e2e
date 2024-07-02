@@ -4,10 +4,14 @@ import { Navigation } from './Navigation';
 export class ProductsPage {
 	private page: Page;
 	private addButtons: Locator;
+	private sortDropdown: Locator;
+	private productTile: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.addButtons = this.page.locator('[data-qa="product-button"]');
+		this.sortDropdown = this.page.locator('[data-qa="sort-dropdown"]');
+		this.productTile = this.page.locator('[data-qa="product-title"]');
 	}
 
 	visit = async () => {
@@ -26,5 +30,18 @@ export class ProductsPage {
 		await expect(addButton).toHaveText('Remove from Basket');
 
 		expect(basketCountAfter).toBeGreaterThan(basketCountBefore);
+	};
+
+	sortByCheapest = async () => {
+		await this.sortDropdown.waitFor();
+		await this.productTile.first().waitFor();
+
+		const titlesBeforeSort = await this.productTile.allInnerTexts();
+
+		await this.sortDropdown.selectOption('price-asc');
+
+		const titlesAfterSort = await this.productTile.allInnerTexts();
+
+		expect(titlesAfterSort).not.toEqual(titlesBeforeSort);
 	};
 }

@@ -1,11 +1,17 @@
 import { test } from '@playwright/test';
+import { v4 as uuidV4 } from 'uuid';
 import { ProductsPage } from '../page-objects/ProductsPage';
 import { Navigation } from '../page-objects/Navigation';
 import { Checkout } from '../page-objects/Checkout';
+import { LoginPage } from '../page-objects/Login';
+import { RegisterPage } from '../page-objects/Register';
+import { DeliveryDetailsPage } from '../page-objects/DeliveryDetails';
 
 test.only('New user e2e', async ({ page }) => {
 	const productPage = new ProductsPage(page);
 	await productPage.visit();
+
+	await productPage.sortByCheapest();
 
 	await productPage.addProductToBasket(0);
 	await productPage.addProductToBasket(1);
@@ -17,4 +23,17 @@ test.only('New user e2e', async ({ page }) => {
 
 	const checkout = new Checkout(page);
 	await checkout.removeCheapestProduct();
+
+	await checkout.continueToCheckout();
+
+	const login = new LoginPage(page);
+	await login.moveToSignup();
+
+	const register = new RegisterPage(page);
+	const email = `${uuidV4()}@test.com`;
+	const password = uuidV4();
+	await register.signupAsNewUser(email, password);
+
+	const delivery = new DeliveryDetailsPage(page);
+	await delivery.fillDetails();
 });
