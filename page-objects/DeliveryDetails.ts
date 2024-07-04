@@ -18,6 +18,7 @@ export class DeliveryDetailsPage {
 	private savedPostCode: Locator;
 	private savedCity: Locator;
 	private savedCountry: Locator;
+	private continueTiPaymentButton: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
@@ -46,6 +47,9 @@ export class DeliveryDetailsPage {
 		);
 		this.savedCity = this.page.locator('[data-qa="saved-address-city"]');
 		this.savedCountry = this.page.locator('[data-qa="saved-address-country"]');
+		this.continueTiPaymentButton = this.page.getByRole('button', {
+			name: 'Continue to payment'
+		});
 	}
 
 	fillDetails = async (deliveryDetails: DeliveryDetails) => {
@@ -99,5 +103,11 @@ export class DeliveryDetailsPage {
 		expect(await this.savedCountry.first().innerText()).toBe(
 			await this.countryDropdown.inputValue()
 		);
+	};
+
+	continueToPayment = async () => {
+		await this.continueTiPaymentButton.waitFor();
+		await this.continueTiPaymentButton.click();
+		await this.page.waitForURL(/\/payment/, { timeout: 3000 });
 	};
 }

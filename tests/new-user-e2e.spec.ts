@@ -7,6 +7,7 @@ import { LoginPage } from '../page-objects/Login';
 import { RegisterPage } from '../page-objects/Register';
 import { DeliveryDetailsPage } from '../page-objects/DeliveryDetails';
 import { deliveryDetails } from '../data/deliveryDetails';
+import { PaymentPage } from '../page-objects/Payment';
 
 test.only('New user e2e', async ({ page }) => {
 	const productPage = new ProductsPage(page);
@@ -38,4 +39,8 @@ test.only('New user e2e', async ({ page }) => {
 	const delivery = new DeliveryDetailsPage(page);
 	await delivery.fillDetails(deliveryDetails);
 	await delivery.saveDetails();
+	await delivery.continueToPayment();
+
+	const payment = new PaymentPage(page);
+	await payment.activateDiscount();
 });
