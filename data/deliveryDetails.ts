@@ -15,3 +15,17 @@ export const deliveryDetails: DeliveryDetails = {
 	city: 'Monterrey',
 	country: 'Mexico'
 };
+
+export interface PaymentDetails {
+	creditCard: string;
+	cvc: string;
+	validUntil: string;
+	owner: string;
+}
+
+export const paymentDetails: PaymentDetails = {
+	creditCard: '1234567890111213',
+	cvc: '123',
+	validUntil: '15/25',
+	owner: 'Luffy MonkeyD'
+};
