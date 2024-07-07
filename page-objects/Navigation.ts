@@ -1,14 +1,17 @@
 import { Locator, Page } from '@playwright/test';
+import { isDesktopViewPort } from '../utils/responsive';
 
 export class Navigation {
 	private page: Page;
 	private basketCounter: Locator;
 	private checkoutLink: Locator;
+	private mobileBurguerButton: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.basketCounter = this.page.locator('[data-qa="header-basket-count"]');
 		this.checkoutLink = this.page.getByRole('link', { name: 'Checkout' });
+		this.mobileBurguerButton = this.page.locator('[data-qa="burger-button"]');
 	}
 
 	getBasketCount = async () => {
@@ -18,6 +21,11 @@ export class Navigation {
 	};
 
 	goToCheckout = async () => {
+		if (!isDesktopViewPort(this.page)) {
+			await this.mobileBurguerButton.waitFor();
+			await this.mobileBurguerButton.click();
+		}
+
 		await this.checkoutLink.waitFor();
 		await this.checkoutLink.click();
 		await this.page.waitForURL('/basket');
