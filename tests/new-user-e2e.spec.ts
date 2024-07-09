@@ -9,7 +9,7 @@ import { DeliveryDetailsPage } from '../page-objects/DeliveryDetails';
 import { deliveryDetails, paymentDetails } from '../data/deliveryDetails';
 import { PaymentPage } from '../page-objects/Payment';
 
-test.only('New user e2e', async ({ page }) => {
+test('New user e2e', async ({ page }) => {
 	const productPage = new ProductsPage(page);
 	await productPage.visit();
 
