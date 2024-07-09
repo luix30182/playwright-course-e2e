@@ -3,7 +3,7 @@ import { MyAccountPage } from '../page-objects/MyAccount';
 import { getLoginToken } from '../api/login';
 import { adminDetails } from '../data/userDetails';
 
-test.skip('My account using cookie injection', async ({ page }) => {
+test('My account using cookie injection', async ({ page }) => {
 	const loginToken = await getLoginToken({
 		userName: adminDetails.userName,
 		password: adminDetails.password
@@ -23,9 +23,7 @@ test.skip('My account using cookie injection', async ({ page }) => {
 	await myAccount.waitForPageHeading();
 });
 
-test.only('My account using cookie injection and mock request', async ({
-	page
-}) => {
+test('My account using cookie injection and mock request', async ({ page }) => {
 	const loginToken = await getLoginToken({
 		userName: adminDetails.userName,
 		password: adminDetails.password
